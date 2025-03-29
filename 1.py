@@ -110,7 +110,7 @@ def read_shapes_from_file(file_name):
     max_measure = -1
 
     try:
-        with open(file_name, 'r') as file:
+        with open(file_name, 'r', encoding='utf-8') as file:
             for line in file:
                 parts = line.strip().split()
                 if not parts:
@@ -142,16 +142,14 @@ def read_shapes_from_file(file_name):
 
 
 def read(filename):
-    file = open(filename, "r")
-    # content = file.read()
-    lines = file.readlines()
-    file.close()
-    return lines
+    with open(filename, "r", encoding='utf-8') as file:
+        return file.readlines()
 
 
 if __name__ == "__main__":
     input_files = ["input01.txt", "input02.txt", "input03.txt"]
     overall_max_shape, overall_max_measure = None, -1
+    output_lines = []
 
     for file in input_files:
         shape, measure = read_shapes_from_file(file)
@@ -160,6 +158,11 @@ if __name__ == "__main__":
             overall_max_shape = shape
 
     if overall_max_shape:
-        print(f"Фігура з найбільшою мірою: {overall_max_shape.__class__.__name__} ({overall_max_measure})")
+        result = f"Фігура з найбільшою мірою: {overall_max_shape.__class__.__name__} ({overall_max_measure})"
     else:
-        print("Жодної коректної фігури не знайдено")
+        result = "Жодної коректної фігури не знайдено"
+
+    print(result)
+
+    with open("output.txt", "w", encoding='utf-8') as output_file:
+        output_file.write(result + "\n")
